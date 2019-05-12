@@ -24,9 +24,11 @@ public class Init implements CommandLineRunner {
                 .subscribe(null, null, () -> {
                     IntStream.range(1, 50)
                             .mapToObj(intx -> new Person(intx, "name", intx))
-                            .peek(System.out::println)
-                            .forEach(personReactiveRepo::save);
+                            .forEach(person -> {
+                                personReactiveRepo.save(person)
+                                        .subscribe(System.out::println);
+                    });
                 });
-        System.out.println("init finish");
+        System.out.println("init finish!");
     }
 }

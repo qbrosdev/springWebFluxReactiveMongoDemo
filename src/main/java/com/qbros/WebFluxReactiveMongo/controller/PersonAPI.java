@@ -6,6 +6,7 @@ import com.qbros.WebFluxReactiveMongo.persistence.repository.PersonReactiveRepo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -21,8 +22,7 @@ import java.util.stream.Stream;
  * on 5/11/2019.
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(onConstructor = @__(@Autowired)) //https://www.baeldung.com/spring-injection-lombok
 @RestController
 @RequestMapping("/persons")
 public class PersonAPI {
@@ -46,6 +46,5 @@ public class PersonAPI {
             Flux<PersonEventDTO> employeeEventFlux = Flux.fromStream(Stream.generate(() -> new PersonEventDTO(employee, new Date())));
             return Flux.zip(interval, employeeEventFlux).map(Tuple2::getT2);
         });
-
     }
 }
